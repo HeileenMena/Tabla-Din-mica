@@ -26,20 +26,40 @@ function generarTabla() {
         // Celdas con números aleatorios
         for (let j = 0; j < columnas; j++) {
             let td = document.createElement('td');
-            td.innerText = Math.floor(Math.random() * 60 + 10); // Números aleatorios de 2 dígitos
+            td.innerText = Math.floor(Math.random() * 60 + 10); // Números aleatorios entre 10 y 60
             tr.appendChild(td);
         }
 
         // Botón de color aleatorio
         let tdButton = document.createElement('td');
-        let colorAleatorio = '#' + Math.floor(Math.random()*16777215).toString(16);
+        let colorAleatorio = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
         let btn = document.createElement('button');
         btn.className = 'color-btn';
         btn.style.backgroundColor = colorAleatorio;
+        // Verificar que el estilo se haya aplicado correctamente
+        if (!btn.style.backgroundColor) {
+            // Si no se aplicó correctamente, asignar un color por defecto
+            btn.style.backgroundColor = '#CCCCCC'; // Color gris claro por defecto
+        }
         btn.onclick = () => colorearColumna(i, colorAleatorio);
         tdButton.appendChild(btn);
         tr.appendChild(tdButton);
         tbody.appendChild(tr);
+
+
+        // Columna en blanco para dar espacio
+        let td = document.createElement('td');
+        td.innerText = " "; // Cadena en blanco
+        td.style.border = "none";
+        tr.appendChild(td);
+
+        // Celdas con números aleatorios
+        for (let j = 0; j < 1; j++) {
+            let td = document.createElement('td');
+            td.innerText = Math.floor(Math.random() * 60 + 10); // Números aleatorios entre 10 y 60
+            tr.appendChild(td);
+        }
+        
     }
     tabla.appendChild(tbody);
 }
@@ -51,7 +71,7 @@ function colorearColumna(filaIndex, color) {
     let columnas = tabla.rows[filaIndex + 1].cells.length - 1; // Excluyendo la columna del botón
 
     // Obtener valores de la fila seleccionada y colorear la columna
-    for (let j = 0; j < columnas; j++) {
+    for (let j = 0; j < columnas-2; j++) {
         let celda = tabla.rows[filaIndex + 1].cells[j];
         valores.push(celda.innerText);
         celda.style.backgroundColor = color;

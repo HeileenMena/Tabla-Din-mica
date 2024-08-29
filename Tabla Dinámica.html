@@ -7,16 +7,26 @@
     <title>Tabla Dinámica</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Tabla Dinámica</h2>
-        <label for="filas">Filas:</label>
-        <input type="number" id="filas" value="3" min="1"><br>
-        <label for="columnas">Columnas:</label>
-        <input type="number" id="columnas" value="3" min="1"><br>
-        <button onclick="generarTabla()">Generar Tabla</button>
-        
-        <table id="tabla"></table>
-        <button onclick="limpiarColores()">Quitar Colores</button>
+    <div class="content">
+        <!-- DIV de la tabla dinamica -->
+        <div class="container">
+            <h2>Tabla Dinámica</h2>
+            <label for="filas">Filas:</label>
+            <input type="number" id="filas" value="3" min="1"><br>
+            <label for="columnas">Columnas:</label>
+            <input type="number" id="columnas" value="3" min="1"><br>
+            <button onclick="generarTabla()">Generar Tabla</button>
+            
+            <table id="tabla"></table>
+            <button onclick="limpiarColores()">Quitar Colores</button>
+        </div>
+
+        <!-- DIV de los números aleatorios -->
+        <div class="container">
+            <h2>Números aleatorios</h2>
+            <h4>En remodelación</h4>
+
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
