@@ -1,0 +1,33 @@
+.container {
+	max-width: 400px;
+	margin: 50px auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	text-align: center;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
+}
+table {
+	border-collapse: collapse;
+	margin: 20px 0;
+}
+td, th {
+	width: 40px; /* Tamaño fijo para que las celdas sean cuadradas */
+	height: 40px;
+	text-align: center;
+	border: 1px solid black;
+	font-size: 16px;
+}
+.color-btn {
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	cursor: pointer;
+}
