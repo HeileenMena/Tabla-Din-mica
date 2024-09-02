@@ -110,47 +110,57 @@ function generarTabla() {
 }
 
 // Función para generar todas las combinaciones posibles, funciona con recursividad
-function generarCombinaciones(arr) {
-    // Si el arreglo está vacío regresa cadena vacía
-    if (arr.length === 0) return [[]];
-    // Separa primer elemento del array del resto
-    const [first, ...rest] = arr;
-    // La función se llama recursivamente y genera todas las combinaciones posibles de rest.
-    const combsWithoutFirst = generarCombinaciones(rest);
-    // Se le añade el primer elemento al inicio de todas las combinaciones anteriores
-    const combsWithFirst = combsWithoutFirst.map(comb => [first, ...comb]);
-    // Se obtienen todas las combinaciones 
-    return [...combsWithoutFirst, ...combsWithFirst];
+function generarCombinaciones(arr, k) {
+    const result = [];
+    function backtrack(start, path) {
+        if (path.length === k) {
+            result.push([...path]);
+            return;
+        }
+
+        for (let i = start; i < arr.length; i++) {
+            path.push(arr[i]);
+            backtrack(i + 1, path);
+            path.pop();
+        }
+    }
+
+    backtrack(0, []);
+    return result;
 }
 
 // Evento para generar combinaciones
 function generarYMostrarCombinaciones() {
-    const combinaciones = generarCombinaciones(numerosSet);
+    let columnas = parseInt(document.getElementById('columnas').value);
+    let cantComb = parseInt(document.getElementById('combinaciones').value);
+    const combinaciones = generarCombinaciones(numerosSet, columnas);
 
     let tbodySet = document.querySelector('#tablaSet tbody');
     tbodySet.innerHTML = ''; // Limpiar contenido anterior
 
     // Va generando filas dependiendo de las combinaciones que se generaron en generarCombinaciones()
-    combinaciones.forEach(comb => {
+    for (let i = 0; i < cantComb && i < combinaciones.length; i++) {
         let trSet = document.createElement('tr');
-        comb.forEach(num => {
+        combinaciones[i].forEach(num => {
             let td = document.createElement('td');
             td.innerText = num;
             trSet.appendChild(td);
         });
         tbodySet.appendChild(trSet);
-    });
+    }
     numerosSet = [];
 }
+
 
 function buscarCoincidencias() {
     let num1 = document.getElementById('num1').value.trim();
     let num2 = document.getElementById('num2').value.trim();
     let num3 = document.getElementById('num3').value.trim();
+    let num4 = document.getElementById('num4').value.trim();
 
     // Obtener todos los valores de la tablaSet
     let filas = document.querySelectorAll('#tablaSet tbody tr');
-    
+
     // Busca fila por fila buscando las coicidencias con los números ingresados
     filas.forEach(fila => {
         let celdas = fila.getElementsByTagName('td');
@@ -166,7 +176,9 @@ function buscarCoincidencias() {
         if (num3 && !Array.from(celdas).some(td => td.innerText === num3)) {
             mostrarFila = false;
         }
-
+        if (num4 && !Array.from(celdas).some(td => td.innerText === num4)) {
+            mostrarFila = false;
+        }
         // Mostrar u ocultar fila según la coincidencia
         fila.style.display = mostrarFila ? '' : 'none';
     });
