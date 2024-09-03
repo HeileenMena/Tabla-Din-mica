@@ -1,14 +1,14 @@
-let numerosSet = [];
+let numerosSet = []; // Array para almacenar los números seleccionados
+let setButtons = []; // Array para almacenar referencias a los botones "Set"
 
 function generarTabla() {
     let filas = parseInt(document.getElementById('filas').value);
     let columnas = parseInt(document.getElementById('columnas').value);
 
-    // Tabla del primer DIV (tabla)
+    // Limpiar tabla y array de botones
+    setButtons = [];
     let tabla = document.getElementById('tabla');
     tabla.innerHTML = '';
-
-    // Tabla del segundo DIV (tablaSet)
     let tablaSet = document.getElementById('tablaSet');
     tablaSet.innerHTML = '';
 
@@ -25,10 +25,8 @@ function generarTabla() {
     thead.appendChild(headerRow);
     tabla.appendChild(thead);
 
-    // Crear el thead de tablaSet sin la celda vacía
     let theadSet = document.createElement('thead');
     let headerRowSet = document.createElement('tr');
-
     for (let j = 1; j <= columnas; j++) {
         let th = document.createElement('th');
         headerRowSet.appendChild(th);
@@ -36,28 +34,35 @@ function generarTabla() {
     theadSet.appendChild(headerRowSet);
     tablaSet.appendChild(theadSet);
 
-    // Crear cuerpo de la tabla con filas y celdas aleatorias
+    // Crear cuerpo de la tabla
     let tbody = document.createElement('tbody');
-    let tbodySet = document.createElement('tbody');  // Crear cuerpo vacío para tablaSet
+    let tbodySet = document.createElement('tbody');
 
     for (let i = 0; i < filas; i++) {
         let tr = document.createElement('tr');
-        let trSet = document.createElement('tr');  // Crear fila vacía para tablaSet
+        let trSet = document.createElement('tr');
 
-        // Botón "Set" en la primera columna
+        // Botón "Set"
         let tdSet = document.createElement('td');
         let setBtn = document.createElement('button');
         setBtn.innerText = 'Set';
         setBtn.onclick = () => {
-            let numerosFila = new Set();
+            setBtn.style.backgroundColor = 'blue';
+            let numerosFila = [];
             for (let j = 1; j <= columnas; j++) {
                 let valor = tr.cells[j].innerText;
-                numerosFila.add(parseInt(valor));
+                numerosFila.push(parseInt(valor));
             }
-            numerosSet.push(...Array.from(numerosFila));
+            numerosSet.push(...numerosFila); // Añadir números de la fila al array numerosSet
+
+            // Actualizar el valor del textBox "txtSet" con todos los números en numerosSet
+            let txtSet = document.getElementById('txtSet');
+            txtSet.value = numerosSet.join(', ');
         };
         tdSet.appendChild(setBtn);
         tr.appendChild(tdSet);
+
+        setButtons.push(setBtn);
 
         // Celdas con números aleatorios
         for (let j = 0; j < columnas; j++) {
@@ -72,42 +77,50 @@ function generarTabla() {
         let btn = document.createElement('button');
         btn.className = 'color-btn';
         btn.style.backgroundColor = colorAleatorio;
-        // Verificar que el estilo se haya aplicado correctamente
+
         if (!btn.style.backgroundColor) {
-            // Si no se aplicó correctamente, asignar un color por defecto
-            btn.style.backgroundColor = '#CCCCCC'; // Color gris claro por defecto
+            btn.style.backgroundColor = '#CCCCCC'; // Color por defecto si no se aplica correctamente
         }
         btn.onclick = () => colorearColumna(i, colorAleatorio);
         tdButton.appendChild(btn);
         tr.appendChild(tdButton);
         tbody.appendChild(tr);
 
-        // Columna en blanco para dar espacio
+        // Columna en blanco
         let td = document.createElement('td');
-        td.innerText = " "; // Cadena en blanco
+        td.innerText = " ";
         td.style.border = "none";
         tr.appendChild(td);
 
-        // Crear fila vacía para tablaSet
-        for (let j = 1; j <= columnas; j++) {
-            let tdSet = document.createElement('td');
-            trSet.appendChild(tdSet);
-        }
-
-        // Celdas con números aleatorios
+        // Celdas con números aleatorios en tablaSet
         for (let j = 0; j < 1; j++) {
             let td = document.createElement('td');
-            td.innerText = Math.floor(Math.random() * 60 + 10); // Números aleatorios
+            td.innerText = Math.floor(Math.random() * 60 + 10);
             tr.appendChild(td);
         }
 
         tbody.appendChild(tr);
-        tbodySet.appendChild(trSet);  // Añadir fila vacía a tablaSet
+        tbodySet.appendChild(trSet);
     }
 
     tabla.appendChild(tbody);
-    tablaSet.appendChild(tbodySet);  // Añadir tbody vacío a tablaSet
+    tablaSet.appendChild(tbodySet);
 }
+
+function eliminarCombinaciones() {
+    let tbodySet = document.querySelector('#tablaSet tbody');
+    tbodySet.innerHTML = ''; // Limpiar contenido de la tablaSet
+    numerosSet = []; // Vaciar el array numerosSet
+    txtSet.value = "";
+
+    // Restablecer el color de fondo de todos los botones "Set"
+    setButtons.forEach(btn => {
+        btn.style.backgroundColor = ''; // Restablecer al color original
+    });
+}
+
+
+
 
 // Función para generar todas las combinaciones posibles, funciona con recursividad
 function generarCombinaciones(arr, k) {
@@ -148,7 +161,6 @@ function generarYMostrarCombinaciones() {
         });
         tbodySet.appendChild(trSet);
     }
-    numerosSet = [];
 }
 
 
